@@ -1,4 +1,8 @@
 <?php include_once('parts/header.php') ?>
+<?php
+include_once('functions.php');
+checkIfIsLogged();
+?>
     <div class="ui sidebar inverted vertical menu">
         <?php include_once('parts/sidebar.php'); ?>
     </div>
@@ -11,19 +15,26 @@
                     Ok, here you go...
                     <div class="sub header">Kimo is one of the best platform for watching your kids in the world.</div>
                 </h2>
-                <form class="ui form">
+                <form class="ui form" >
                     <div class="field">
                         <label>Email</label>
-                        <input type="email" name="email">
+                        <input type="email" name="email" id="email">
                     </div>
                     <div class="field">
                         <label>Password</label>
-                        <input type="password" name="password">
+                        <input type="password" name="password" id="password">
                     </div>
                     <div class="buttons">
-                        <button class="ui button blue" type="submit">Login</button>
+                        <button class="ui button blue loginButton" type="button">Login</button>
                     </div>
                 </form>
+                <div class="ui negative message">
+                    <i class="close icon"></i>
+                    <div class="header">
+                        User not found!
+                    </div>
+                    <p>Please try again.
+                    </p></div>
             </div>
         </div>
         <?php include_once('parts/footer.php') ?>
