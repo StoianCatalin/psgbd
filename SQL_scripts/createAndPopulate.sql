@@ -55,18 +55,6 @@ PRIMARY KEY(id));
 /
 
 
-create table locationPoints(
-id NUMBER(5) NOT NULL,
-utilizatori_fk NUMBER(5) NOT NULL,
-longitude NUMBER(30, 10) NOT NULL,
-latitude NUMBER(30, 10) NOT NULL,
-createdDate TIMESTAMP NOT NULL,
-PRIMARY KEY(id),
-FOREIGN KEY (utilizatori_fk) REFERENCES utilizatori(id)
-);
-/
-
-
 create table notifications(
 id NUMBER(5) NOT NULL,
 parent_fk NUMBER(5) NOT NULL,
@@ -89,6 +77,19 @@ createdDate TIMESTAMP NOT NULL,
 updatedDate TIMESTAMP DEFAULT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY(parent_fk) REFERENCES utilizatori(id)
+);
+/
+
+create table locationPoints(
+id NUMBER(5) NOT NULL,
+utilizatori_fk NUMBER(5) NOT NULL,
+longitude NUMBER(30, 10) NOT NULL,
+latitude NUMBER(30, 10) NOT NULL,
+createdDate TIMESTAMP NOT NULL,
+interesArea_fk NUMBER(5),
+PRIMARY KEY(id),
+FOREIGN KEY (utilizatori_fk) REFERENCES utilizatori(id),
+FOREIGN KEY (interesArea_fk) REFERENCES interesAreas(id)
 );
 /
 
@@ -258,8 +259,6 @@ END;
 
 /
 
-
---popularea tabelei locationpoints, deocamdata nefunctionala
 declare
 
 v_id NUMBER(5, 0) := 1;
