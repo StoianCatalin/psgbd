@@ -12,6 +12,8 @@ CREATE OR REPLACE PACKAGE points AS
 --pentru a calcula distanta (in km) intre 2 puncte.
 END points;
 
+/
+
 CREATE OR REPLACE PACKAGE BODY points AS
 
 	FUNCTION returnAllPoints(p_id_interesArea NUMBER)
@@ -24,7 +26,15 @@ CREATE OR REPLACE PACKAGE BODY points AS
 			latitude NUMBER(30, 10);
 			finalCoordinates coordinates;
 			counter NUMBER := 1;
+			exists_interesArea NUMBER;
 	BEGIN
+			SELECT count(*) INTO exists_interesArea FROM interesAreas WHERE id = p_id_interesArea;
+
+			IF(exists_interesArea <> 1) 
+			THEN
+				RAISE exceptions.not_a_entity_id;
+			END IF;
+
 			OPEN locationPointsList;
 			LOOP 
 				FETCH locationPointsList INTO longitude, latitude;
@@ -34,6 +44,9 @@ CREATE OR REPLACE PACKAGE BODY points AS
 				counter := counter + 1;
 			END LOOP;
 			RETURN finalCoordinates;
+			EXCEPTION 
+			WHEN exceptions.not_a_user THEN
+  				raise_application_error (-20003, 'The interesArea id: ' || p_id_interesArea || ' does not exist in our atabase');
 	END returnAllPoints;
 
 	FUNCTION radians(degree NUMBER) 
@@ -86,7 +99,15 @@ CREATE OR REPLACE PACKAGE BODY points AS
 			finalCoordinates coordinates;
 			counter NUMBER := 1;
 			distance NUMBER(30, 10);
+			exists_locationPoints NUMBER;
 	BEGIN
+			SELECT count(*) INTO exists_locationPoints FROM locationPoints WHERE id in (p_id_locPoint1, p_id_locPoint2);
+
+			IF (exists_locationPoints <> 2)
+			THEN
+				RAISE exceptions.not_a_entity_id;
+			END IF;
+
 			OPEN locationPointsList;
 			LOOP 
 				FETCH locationPointsList INTO longitude, latitude;
@@ -97,6 +118,9 @@ CREATE OR REPLACE PACKAGE BODY points AS
 			END LOOP;
 			distance := computeDistance(finalCoordinates);
 			RETURN distance;
+			EXCEPTION 
+			WHEN exceptions.not_a_user THEN
+  				raise_application_error (-20003, 'The arguments do not exist in our atabase');
 	END returnDistanceBetweenTwoPoints;
 END points;
 
