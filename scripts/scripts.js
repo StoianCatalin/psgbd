@@ -12,7 +12,7 @@ $(document).on('click', '.loginButton', function() {
     var email = $('#email').val();
     var password = $('#password').val();
     $.post('/endpoints/login.php', {email: email, password: password}, function(response) {
-        if (response == 'Success')
+        if (response.status == 'success')
             window.location.reload();
         else {
             $('#email').val('');

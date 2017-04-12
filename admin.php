@@ -56,6 +56,7 @@ while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
                        <th>E-mail</th>
                        <th>Birth Date</th>
                        <th>Facebook</th>
+                       <th>Area Calculated</th>
                        <th>Actions</th>
                    </tr>
                    </thead>
@@ -63,19 +64,26 @@ while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
                    <?php
                    $pagination = array_slice($rows, ($page - 1) * $limit, $limit);
                         foreach ($pagination  as $row) {
+                            $area = 0;
+                            $stid = oci_parse($conn, "SELECT points.computeArea(p.id) as area from interesareas p where parent_fk=".$row['ID']);
+                            oci_execute($stid);
+                            while ($row2 = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                                $area = $row2['AREA'];
+                            }
                             echo '<tr>';
                             echo '<td>'.$row['ID'].'</td>';
                             echo '<td>'.$row['NAME'].'</td>';
                             echo '<td>'.$row['EMAIL'].'</td>';
                             echo '<td>'.$row['BIRTHDATE'].'</td>';
                             echo '<td>'.$row['FACEBOOK'].'</td>';
+                            echo '<td>'.$area.'</td>';
                             echo '<td><a href="/edit-user.php?user_id='.$row['ID'].'"><button class="ui icon button green"><i class="edit icon"></i></button></a><a href="/endpoints/delete.php?user_id='.$row['ID'].'"><button class="ui icon button red"><i class="remove icon"></i></button></a></td>';
                             echo '</tr>';
                         }
                    ?>
                    </tbody>
                    <tfoot>
-                   <tr><th colspan="5">
+                   <tr><th colspan="7">
                            <div class="ui right floated pagination menu">
                                <a href="/admin.php?page=1<?php echo isset($_GET['search']) ? '&search='.$_GET['search'] : '' ?>" class="item">First Page</a>
                                <?php

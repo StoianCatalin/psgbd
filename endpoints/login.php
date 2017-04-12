@@ -16,10 +16,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         if ($row['STATUS'] == 1) {
             $stid2 = oci_parse($conn, "SELECT * FROM utilizatori where email='".$email."' and password='".md5($password)."'");
             oci_execute($stid2);
-            while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+            while ($row = oci_fetch_array($stid2, OCI_ASSOC+OCI_RETURN_NULLS)) {
                 $_SESSION['user'] = array($row['ID'], $row['TYPE'], $row['EMAIL'], $row['NAME']);
                 header('Content-Type: application/json;charset=utf-8');
-                echo "Success";
+                echo json_encode(array('status'=>'success'));
             }
         }
         else {
