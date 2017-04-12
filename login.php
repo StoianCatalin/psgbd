@@ -31,7 +31,7 @@ checkIfIsLogged();
                 <div class="ui negative message">
                     <i class="close icon"></i>
                     <div class="header">
-                        User not found!
+                        The user with email is not in our database.
                     </div>
                     <p>Please try again.
                     </p></div>

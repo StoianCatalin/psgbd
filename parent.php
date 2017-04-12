@@ -9,7 +9,7 @@ checkIfIsParent();
     <div class="pusher">
         <?php include_once('parts/topbar.php') ?>
         <div class="content">
-            Parent: <?php echo $_SESSION['user']['2']; ?>
+            Parent: <?php echo $_SESSION['user'][2]; ?>
         </div>
         <?php include_once('parts/footer.php') ?>
     </div>
