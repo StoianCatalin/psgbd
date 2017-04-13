@@ -68,6 +68,6 @@ CREATE OR REPLACE PACKAGE BODY userOperations AS
 		RETURN 1;
 	EXCEPTION 
 		WHEN exceptions.not_a_user THEN
-  			raise_application_error (-20002, 'The user with email ' || p_email || ' is not in our database');
+  			raise_application_error (-20002, 'The user with email is not in our database');
 	END logIn;
 END userOperations;

@@ -4,7 +4,9 @@ include_once('functions.php');
 checkIfIsAdmin();
 include_once('endpoints/db.php');
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$limit = 20;
+if (isset($_GET['limit']))
+    $_SESSION['limit'] = $_GET['limit'];
+$limit = isset($_SESSION['limit']) ? $_SESSION['limit'] : 20;
 if (isset($_GET['search']))
     $stid = oci_parse($conn, "SELECT * FROM (SELECT a.*, rownum r__ FROM (SELECT * FROM UTILIZATORI where name like '%".htmlentities($_GET['search'])."%' or email like '%".htmlentities($_GET['search'])."%' or facebook like '%".htmlentities($_GET['search'])."%' ORDER BY ID ASC) a WHERE rownum < ((".$page." * ".$limit." + 1))) WHERE r__ >= ((".$page." - 1000) * ".$limit." + 1)");
 else
@@ -48,6 +50,11 @@ while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
                <button class="ui button blue searchButton">Search</button>
                <br /><br />
                <a href="/add-user.php"><button class="ui button blue">Add user</button></a>
+               <br /><br />
+               <a href="/admin.php?limit=10"><button class="ui button blue">10</button></a>
+               <a href="/admin.php?limit=20"><button class="ui button blue">20</button></a>
+               <a href="/admin.php?limit=50"><button class="ui button blue">50</button></a>
+               <a href="/admin.php?limit=100"><button class="ui button blue">100</button></a>
                <table class="ui striped table">
                    <thead>
                    <tr>

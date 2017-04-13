@@ -119,7 +119,7 @@ CREATE OR REPLACE PACKAGE BODY points AS
 			distance := computeDistance(finalCoordinates);
 			RETURN distance;
 			EXCEPTION 
-			WHEN exceptions.not_a_user THEN
+			WHEN exceptions.not_a_entity_id THEN
   				raise_application_error (-20003, 'The arguments do not exist in our atabase');
 	END returnDistanceBetweenTwoPoints;
 END points;
